@@ -1,0 +1,7 @@
+{
+  "name": "background-runner-testapp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
