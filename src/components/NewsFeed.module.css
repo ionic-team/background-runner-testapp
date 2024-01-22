@@ -1,0 +1,11 @@
+ion-label strong {
+  display: block;
+  max-width: calc(100% - 60px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timestamp {
+  font-size: 0.875rem;
+  text-align: center;
+}
