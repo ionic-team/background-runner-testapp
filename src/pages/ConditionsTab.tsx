@@ -7,8 +7,10 @@ import {
 } from "@ionic/react";
 import "./ConditionsTab.css";
 import CurrentConditions from "../components/CurrentConditions";
+import { useApp } from "../context/AppContext";
 
 const ConditionsTab: React.FC = () => {
+  const { conditions, lastUpdated } = useApp();
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -17,14 +19,7 @@ const ConditionsTab: React.FC = () => {
             <IonTitle size="large">Tab 1</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <CurrentConditions
-          conditions={{
-            location: "Any City, South Dakota 57106",
-            condition: "<unknown>",
-            temp: 0,
-            conditionIcon: "",
-          }}
-        />
+        <CurrentConditions conditions={conditions} lastUpdated={lastUpdated} />
       </IonContent>
     </IonPage>
   );

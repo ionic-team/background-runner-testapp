@@ -1,15 +1,10 @@
+import { WeatherCondition } from "../context/AppContext";
+
 import styles from "./CurrentConditions.module.css";
 
 interface CurrentConditionsProps {
   conditions: WeatherCondition;
   lastUpdated?: Date;
-}
-
-export interface WeatherCondition {
-  location: string;
-  temp: number;
-  condition: string;
-  conditionIcon: string;
 }
 
 const CurrentConditions: React.FC<CurrentConditionsProps> = ({

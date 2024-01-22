@@ -33,36 +33,39 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/weather-icons.css";
+import { AppProvider } from "./context/AppContext";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/conditions">
-            <ConditionsTab />
-          </Route>
-          <Route exact path="/feed">
-            <FeedTab />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/conditions" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/conditions">
-            <IonIcon aria-hidden="true" icon={cloudOutline} />
-            <IonLabel>Conditions</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/feed">
-            <IonIcon aria-hidden="true" icon={newspaperOutline} />
-            <IonLabel>Feed</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
+    <AppProvider>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/conditions">
+              <ConditionsTab />
+            </Route>
+            <Route exact path="/feed">
+              <FeedTab />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/conditions" />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="tab1" href="/conditions">
+              <IonIcon aria-hidden="true" icon={cloudOutline} />
+              <IonLabel>Conditions</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tab2" href="/feed">
+              <IonIcon aria-hidden="true" icon={newspaperOutline} />
+              <IonLabel>Feed</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </AppProvider>
   </IonApp>
 );
 

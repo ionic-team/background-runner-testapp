@@ -1,17 +1,13 @@
 import { IonList, IonItem, IonLabel, IonText, IonIcon } from "@ionic/react";
 import { arrowRedoOutline } from "ionicons/icons";
+
+import { NewsStory, useApp } from "../context/AppContext";
+
 import styles from "./NewsFeed.module.css";
 
 interface NewsFeedProps {
   stories: NewsStory[];
   lastUpdated?: Date;
-}
-
-export interface NewsStory {
-  title: string;
-  teaser: string;
-  link: string;
-  publishDate?: Date;
 }
 
 const NewsFeed: React.FC<NewsFeedProps> = ({ stories, lastUpdated }) => {
