@@ -1,32 +1,49 @@
-import {
-  IonList,
-  IonItem,
-  IonLabel,
-  IonText,
-  IonNote,
-  IonIcon,
-} from "@ionic/react";
+import { IonList, IonItem, IonLabel, IonText, IonIcon } from "@ionic/react";
 import { arrowRedoOutline } from "ionicons/icons";
 import styles from "./NewsFeed.module.css";
 
-const NewsFeed: React.FC = () => {
+interface NewsFeedProps {
+  stories: NewsStory[];
+  lastUpdated?: Date;
+}
+
+export interface NewsStory {
+  title: string;
+  teaser: string;
+  link: string;
+  publishDate?: Date;
+}
+
+const NewsFeed: React.FC<NewsFeedProps> = ({ stories, lastUpdated }) => {
+  const launchArticle = (url: string) => {
+    window.open(url, "_blank");
+  };
+
   return (
     <div className={styles.feed}>
       <IonList inset={true}>
-        <IonItem button={true} detail={false}>
-          <IonLabel>
-            <strong>Sample Article Title</strong>
-            <IonText>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-              vehicula dapibus velit...
-            </IonText>
-          </IonLabel>
-          <div className="metadata-end-wrapper" slot="end">
-            <IonIcon color="medium" icon={arrowRedoOutline}></IonIcon>
-          </div>
-        </IonItem>
+        {stories.map((story) => {
+          return (
+            <IonItem
+              key={story.link}
+              onClick={() => launchArticle(story.link)}
+              button={true}
+              detail={false}
+            >
+              <IonLabel>
+                <strong>{story.title}</strong>
+                <IonText>{story.teaser}</IonText>
+              </IonLabel>
+              <div className="metadata-end-wrapper" slot="end">
+                <IonIcon color="medium" icon={arrowRedoOutline}></IonIcon>
+              </div>
+            </IonItem>
+          );
+        })}
       </IonList>
-      <div className={styles.timestamp}>Last Updated: ---</div>
+      <div className={styles.timestamp}>
+        Last Updated: {lastUpdated ? lastUpdated.toISOString() : "---"}
+      </div>
     </div>
   );
 };
