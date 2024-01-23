@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { App } from "@capacitor/app";
+import { Preferences } from "@capacitor/preferences";
 
 export interface WeatherCondition {
   location: string;
@@ -46,13 +48,56 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [stories, setStories] = useState<NewsStory[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date | undefined>(undefined);
 
+  const updateStories = async (): Promise<void> => {
+    try {
+      const result = await Preferences.get({ key: "cached_stories" });
+      if (result.value) {
+        const cachedStories = JSON.parse(result.value) as NewsStory[];
+        setStories(cachedStories);
+      } else {
+        console.warn("No value for key 'cached_stories'");
+      }
+    } catch (err) {
+      console.error(`Could not update stories: ${err}`);
+    }
+  };
+
+  const updateWeatherConditions = async (): Promise<void> => {
+    try {
+      const result = await Preferences.get({ key: "cached_weather" });
+      if (result.value) {
+        const cachedWeather = JSON.parse(result.value) as WeatherCondition;
+        setConditions(cachedWeather);
+      } else {
+        console.warn("No value for key 'cached_weather'");
+      }
+    } catch (err) {
+      console.error(`Could not update weather condition: ${err}`);
+    }
+  };
+
   const update = async (): Promise<any> => {
-    return Promise.resolve();
+    await Promise.all([updateStories(), updateWeatherConditions()]);
+    const result = await Preferences.get({ key: "last_updated" });
+    if (result.value) {
+      const timestamp = parseInt(result.value);
+      const timestampDate = new Date(timestamp * 1000);
+      setLastUpdated(timestampDate);
+    } else {
+      console.warn("No value for key 'last_updated'");
+    }
   };
 
   useEffect(() => {
-    console.log("App Context Loaded");
+    update();
+
+    App.addListener("appStateChange", ({ isActive }) => {
+      if (isActive) {
+        update();
+      }
+    });
   }, []);
+
   return (
     <AppContext.Provider
       value={{

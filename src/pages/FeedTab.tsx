@@ -22,7 +22,7 @@ const FeedTab: React.FC = () => {
       <IonContent color="light">
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Apple Developer News</IonTitle>
+            <IonTitle size="small">Apple Developer News</IonTitle>
           </IonToolbar>
         </IonHeader>
         <NewsFeed stories={stories} lastUpdated={lastUpdated} />

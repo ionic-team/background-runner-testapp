@@ -14,11 +14,6 @@ const ConditionsTab: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <CurrentConditions conditions={conditions} lastUpdated={lastUpdated} />
       </IonContent>
     </IonPage>
