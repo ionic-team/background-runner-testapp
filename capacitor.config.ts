@@ -7,6 +7,16 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: "https",
   },
+  plugins: {
+    BackgroundRunner: {
+      label: "com.capacitorjs.background.testapp.task",
+      src: "assets/background.js",
+      event: "updateData",
+      repeat: true,
+      interval: 30,
+      autoStart: false,
+    },
+  },
 };
 
 export default config;
