@@ -1,0 +1,8 @@
+include ':app'
+include ':capacitor-cordova-android-plugins'
+project(':capacitor-cordova-android-plugins').projectDir = new File('./capacitor-cordova-android-plugins/')
+
+include ':capacitor-android-js-engine'
+project(':capacitor-android-js-engine').projectDir = new File("../../capacitor-background-runner/packages/android-js-engine/AndroidJSEngine")
+
+apply from: 'capacitor.settings.gradle'
