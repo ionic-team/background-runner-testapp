@@ -10,9 +10,14 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { newspaperOutline, cloudOutline } from "ionicons/icons";
+import {
+  newspaperOutline,
+  cloudOutline,
+  settingsOutline,
+} from "ionicons/icons";
 import ConditionsTab from "./pages/ConditionsTab";
 import FeedTab from "./pages/FeedTab";
+import LogTab from "./pages/LogTab";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -49,6 +54,9 @@ const App: React.FC = () => (
             <Route exact path="/feed">
               <FeedTab />
             </Route>
+            <Route exact path="/log">
+              <LogTab />
+            </Route>
             <Route exact path="/">
               <Redirect to="/conditions" />
             </Route>
@@ -61,6 +69,10 @@ const App: React.FC = () => (
             <IonTabButton tab="tab2" href="/feed">
               <IonIcon aria-hidden="true" icon={newspaperOutline} />
               <IonLabel>Feed</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tab3" href="/log">
+              <IonIcon aria-hidden="true" icon={settingsOutline} />
+              <IonLabel>Log</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
