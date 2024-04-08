@@ -1,7 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { App } from "@capacitor/app";
-import { Preferences } from "@capacitor/preferences";
+import { BackgroundRunner } from "@capacitor/background-runner";
 
+export interface UpdateLogEntry {
+  timestamp: number;
+  status: string;
+}
+
+export interface UpdateLog {
+  news: UpdateLogEntry[];
+  weather: UpdateLogEntry[];
+}
 export interface WeatherCondition {
   location: string;
   temp: number;
@@ -16,17 +25,28 @@ export interface NewsStory {
   publishDate?: Date;
 }
 
+interface NewsStories {
+  [key: string]: NewsStory;
+}
+
 interface AppContextProps {
   conditions: WeatherCondition;
-  stories: NewsStory[];
+  stories: NewsStories;
+  log: UpdateLog;
   lastUpdated?: Date;
 
   update: () => Promise<any>;
+  getLog: () => Promise<void>;
 }
 
 interface AppProviderProps {
   children?: React.ReactNode;
 }
+
+const emptyUpdateLog: UpdateLog = {
+  news: [],
+  weather: [],
+};
 
 const defaultCondition: WeatherCondition = {
   location: "---",
@@ -37,22 +57,30 @@ const defaultCondition: WeatherCondition = {
 
 export const AppContext = createContext<AppContextProps>({
   conditions: defaultCondition,
-  stories: [],
+  stories: {},
+  log: emptyUpdateLog,
   lastUpdated: undefined,
-  update: () => Promise.resolve(),
+  update: () => Promise.reject(),
+  getLog: () => Promise.reject(),
 });
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [conditions, setConditions] =
     useState<WeatherCondition>(defaultCondition);
-  const [stories, setStories] = useState<NewsStory[]>([]);
+  const [stories, setStories] = useState<NewsStories>({});
+  const [log, setLog] = useState<UpdateLog>(emptyUpdateLog);
   const [lastUpdated, setLastUpdated] = useState<Date | undefined>(undefined);
 
   const updateStories = async (): Promise<void> => {
     try {
-      const result = await Preferences.get({ key: "cached_stories" });
-      if (result.value) {
-        const cachedStories = JSON.parse(result.value) as NewsStory[];
+      const result = await BackgroundRunner.dispatchEvent<{ value: string }>({
+        event: "getStories",
+        label: "com.capacitorjs.background.testapp.task",
+        details: {},
+      });
+
+      if (result && result.value) {
+        const cachedStories = JSON.parse(result.value) as NewsStories;
         setStories(cachedStories);
       } else {
         console.warn("No value for key 'cached_stories'");
@@ -64,8 +92,15 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   const updateWeatherConditions = async (): Promise<void> => {
     try {
-      const result = await Preferences.get({ key: "cached_weather" });
-      if (result.value) {
+      const result = await BackgroundRunner.dispatchEvent<{ value: string }>({
+        event: "getCurrentConditions",
+        label: "com.capacitorjs.background.testapp.task",
+        details: {},
+      });
+
+      console.log(JSON.stringify(result));
+
+      if (result && result.value) {
         const cachedWeather = JSON.parse(result.value) as WeatherCondition;
         setConditions(cachedWeather);
       } else {
@@ -77,9 +112,19 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   };
 
   const update = async (): Promise<any> => {
-    await Promise.all([updateStories(), updateWeatherConditions()]);
-    const result = await Preferences.get({ key: "last_updated" });
-    if (result.value) {
+    await Promise.all([updateWeatherConditions(), updateStories()]);
+
+    await getLog();
+
+    const result = await BackgroundRunner.dispatchEvent<{ value: string }>({
+      event: "getLastUpdated",
+      label: "com.capacitorjs.background.testapp.task",
+      details: {
+        currentDate: new Date(),
+      },
+    });
+
+    if (result && result.value) {
       const timestamp = parseInt(result.value);
       const timestampDate = new Date(timestamp * 1000);
       setLastUpdated(timestampDate);
@@ -88,14 +133,33 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   };
 
+  const getLog = async (): Promise<void> => {
+    const result = await BackgroundRunner.dispatchEvent<{ value: string }>({
+      event: "getUpdateLog",
+      label: "com.capacitorjs.background.testapp.task",
+      details: {},
+    });
+
+    if (result && result.value) {
+      const latestLog = JSON.parse(result.value) as UpdateLog;
+      setLog(latestLog);
+    } else {
+      console.warn("no value for key `update_log`");
+    }
+  };
+
   useEffect(() => {
     update();
 
-    App.addListener("appStateChange", ({ isActive }) => {
-      if (isActive) {
+    const handle = App.addListener("appStateChange", (appState) => {
+      if (appState.isActive) {
         update();
       }
     });
+
+    return () => {
+      handle.remove();
+    };
   }, []);
 
   return (
@@ -103,8 +167,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       value={{
         conditions,
         stories,
+        log,
         lastUpdated,
         update,
+        getLog,
       }}
     >
       {children}
