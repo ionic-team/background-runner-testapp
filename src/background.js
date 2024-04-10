@@ -70,7 +70,7 @@ async function checkNews() {
 
     const result = CapacitorKV.get("cached_stories");
 
-    if (result) {
+    if (result && result.value) {
       existingStories = JSON.parse(result.value);
     }
 
@@ -91,16 +91,20 @@ async function checkNews() {
       let scheduleDate = new Date();
       scheduleDate.setSeconds(scheduleDate.getSeconds() + 20);
 
-      CapacitorNotifications.schedule([
-        {
-          id: 100,
-          title: latestStory.title,
-          body: latestStory.teaser,
-          scheduleAt: scheduleDate,
-        },
-      ]);
+      try {
+        CapacitorNotifications.schedule([
+          {
+            id: 100,
+            title: latestStory.title,
+            body: latestStory.teaser,
+            scheduleAt: scheduleDate,
+          },
+        ]);
 
-      console.log("news story notification scheduled");
+        console.log("news story notification scheduled");
+      } catch (err) {
+        console.error(`Could not schedule news story notification: ${err}`);
+      }
     }
   } catch (err) {
     console.error(`Could not get news stories: ${err}`);
