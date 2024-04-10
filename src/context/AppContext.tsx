@@ -34,9 +34,12 @@ interface AppContextProps {
   stories: NewsStories;
   log: UpdateLog;
   lastUpdated?: Date;
+  hasPermissions: boolean;
 
   update: () => Promise<any>;
   getLog: () => Promise<void>;
+  requestPermissions: () => Promise<void>;
+  dispatchBackgroundEvent: () => Promise<void>;
 }
 
 interface AppProviderProps {
@@ -60,8 +63,11 @@ export const AppContext = createContext<AppContextProps>({
   stories: {},
   log: emptyUpdateLog,
   lastUpdated: undefined,
+  hasPermissions: false,
   update: () => Promise.reject(),
   getLog: () => Promise.reject(),
+  dispatchBackgroundEvent: () => Promise.reject(),
+  requestPermissions: () => Promise.reject(),
 });
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
@@ -70,6 +76,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [stories, setStories] = useState<NewsStories>({});
   const [log, setLog] = useState<UpdateLog>(emptyUpdateLog);
   const [lastUpdated, setLastUpdated] = useState<Date | undefined>(undefined);
+  const [hasPermissions, setHasPermissions] = useState<boolean>(false);
 
   const updateStories = async (): Promise<void> => {
     try {
@@ -148,8 +155,46 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   };
 
+  const requestPermissions = async () => {
+    const permissions = await BackgroundRunner.requestPermissions({
+      apis: ["geolocation", "notifications"],
+    });
+
+    if (
+      permissions.geolocation === "granted" &&
+      permissions.notifications === "granted"
+    ) {
+      setHasPermissions(true);
+    }
+  };
+
+  const checkPermissions = async () => {
+    const permissions = await BackgroundRunner.checkPermissions();
+    if (
+      permissions.geolocation === "granted" &&
+      permissions.notifications === "granted"
+    ) {
+      setHasPermissions(true);
+    }
+  };
+
+  const dispatchBackgroundEvent = async () => {
+    try {
+      await BackgroundRunner.dispatchEvent({
+        event: "updateData",
+        label: "com.capacitorjs.background.testapp.task",
+        details: {},
+      });
+
+      update();
+    } catch (err) {
+      console.error(`Dispatch error: ${err}`);
+    }
+  };
+
   useEffect(() => {
     update();
+    checkPermissions();
 
     const handle = App.addListener("appStateChange", (appState) => {
       if (appState.isActive) {
@@ -169,8 +214,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         stories,
         log,
         lastUpdated,
+        hasPermissions,
         update,
         getLog,
+        requestPermissions,
+        dispatchBackgroundEvent,
       }}
     >
       {children}
