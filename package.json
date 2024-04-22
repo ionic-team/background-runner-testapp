@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && npm run build:runner",
-    "build:runner": "cp src/background.js dist/assets/background.js",
+    "build:runner": "cp src/background.js dist/assets/background.js && node ./scripts/runner_env_replace.mjs",
     "preview": "vite preview",
     "test.e2e": "cypress run",
     "test.unit": "vitest",
@@ -27,6 +27,7 @@
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
     "ionicons": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

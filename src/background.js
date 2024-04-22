@@ -11,7 +11,7 @@ async function checkWeather() {
   }
 
   try {
-    const weatherAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=imperial&exclude=minutely,hourly,daily,alerts&appid={API_KEY}`;
+    const weatherAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=imperial&exclude=minutely,hourly,daily,alerts&appid={OPENWEATHERMAP_API_KEY}`;
     const response = await fetch(weatherAPI);
 
     if (!response.ok) {
