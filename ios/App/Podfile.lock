@@ -3,7 +3,7 @@ PODS:
     - CapacitorCordova
   - CapacitorApp (5.0.7):
     - Capacitor
-  - CapacitorBackgroundRunner (1.0.5):
+  - CapacitorBackgroundRunner (1.1.0):
     - Capacitor
   - CapacitorCordova (5.7.5)
   - CapacitorHaptics (5.0.7):
@@ -46,7 +46,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: 7d42085cb786b2d3ea9ac8a17ebd7e3305be7b72
   CapacitorApp: 17fecd0e6cb23feafac7eb0939417389038b0979
-  CapacitorBackgroundRunner: f2415aebbcea4e744eb45f785a50f07ba72f1d0b
+  CapacitorBackgroundRunner: 270b88dd7ba6631b22f17ab4f10422834d82c1aa
   CapacitorCordova: c946a6052b547e1e185fc46862003f7b9130ead1
   CapacitorHaptics: 7c7c206f0c96a628fed073830c96d28c4b2e772e
   CapacitorKeyboard: aec619a578235c6ce279075009a2689c2cf5c42c

@@ -15,7 +15,7 @@
   "dependencies": {
     "@capacitor/android": "^5.7.4",
     "@capacitor/app": "5.0.7",
-    "@capacitor/background-runner": "file:../capacitor-background-runner/capacitor-background-runner-1.0.5.tgz",
+    "@capacitor/background-runner": "^1.1.0",
     "@capacitor/core": "5.7.4",
     "@capacitor/haptics": "5.0.7",
     "@capacitor/ios": "^5.7.4",
