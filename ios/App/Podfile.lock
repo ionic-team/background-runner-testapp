@@ -1,18 +1,18 @@
 PODS:
-  - Capacitor (5.7.5):
+  - Capacitor (7.0.1):
     - CapacitorCordova
-  - CapacitorApp (5.0.7):
+  - CapacitorApp (7.0.0):
     - Capacitor
-  - CapacitorBackgroundRunner (1.1.0):
+  - CapacitorBackgroundRunner (2.1.0):
     - Capacitor
-  - CapacitorCordova (5.7.5)
-  - CapacitorHaptics (5.0.7):
+  - CapacitorCordova (7.0.1)
+  - CapacitorHaptics (7.0.0):
     - Capacitor
-  - CapacitorKeyboard (5.0.8):
+  - CapacitorKeyboard (7.0.0):
     - Capacitor
-  - CapacitorPreferences (5.0.7):
+  - CapacitorPreferences (7.0.0):
     - Capacitor
-  - CapacitorStatusBar (5.0.7):
+  - CapacitorStatusBar (7.0.0):
     - Capacitor
 
 DEPENDENCIES:
@@ -44,15 +44,15 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: 7d42085cb786b2d3ea9ac8a17ebd7e3305be7b72
-  CapacitorApp: 17fecd0e6cb23feafac7eb0939417389038b0979
-  CapacitorBackgroundRunner: 270b88dd7ba6631b22f17ab4f10422834d82c1aa
-  CapacitorCordova: c946a6052b547e1e185fc46862003f7b9130ead1
-  CapacitorHaptics: 7c7c206f0c96a628fed073830c96d28c4b2e772e
-  CapacitorKeyboard: aec619a578235c6ce279075009a2689c2cf5c42c
-  CapacitorPreferences: 77ac427e98db83bace772455f8ba447430382c4c
-  CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
+  Capacitor: 23fff43571a4d1e3ee7d67b5a3588c6e757c2913
+  CapacitorApp: 45cb7cbef4aa380b9236fd6980033eb5cde6fcd2
+  CapacitorBackgroundRunner: 75cddaea3ecc58c79ecd2b772cb80f8ecb1f3299
+  CapacitorCordova: 63d476958d5022d76f197031e8b7ea3519988c64
+  CapacitorHaptics: 1fba3e460e7614349c6d5f868b1fccdc5c87b66d
+  CapacitorKeyboard: 2c26c6fccde35023c579fc37d4cae6326d5e6343
+  CapacitorPreferences: e24a50a936f0e4f54a6b43be6121f923b4d91c27
+  CapacitorStatusBar: 438e90beeeefa8276b24e6c5991cb02dd13e51bf
 
-PODFILE CHECKSUM: bd6a290cbc5e5f036b5ad4a9025830c744ad1d99
+PODFILE CHECKSUM: 9db6dfc46b50fde2fb45c10222d0f8109f431e60
 
 COCOAPODS: 1.15.2

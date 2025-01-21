@@ -203,7 +203,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     });
 
     return () => {
-      handle.remove();
+      App.removeAllListeners();
     };
   }, []);
 
